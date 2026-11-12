@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bloom Diary 🌷</title>
+<style>
+/* ===== COLORES (cámbialos aquí) ===== */
+:root{--rosa:#f8c8dc;--polvo:#e8a0bf;--lila:#dccbf2;--crema:#fff8ee;--txt:#6b4a5e;--acento:#e8a0bf}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(160deg,var(--crema),#fdeef5 60%,#efe6fa);color:var(--txt);min-height:100vh}
+header{text-align:center;padding:18px 10px 4px}
+header h1{margin:0;font-size:2rem;font-style:italic;color:var(--acento)}
+header p{margin:2px 0 0;font-size:.95rem}
+nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:10px;position:sticky;top:0;background:#fff8eecc;backdrop-filter:blur(6px);z-index:5}
+nav button,.btn,button.b{border:0;border-radius:20px;padding:8px 14px;background:#fff;color:var(--txt);box-shadow:0 2px 8px #e8a0bf44;cursor:pointer;font:inherit;font-size:.9rem}
+nav button.on,.btn.p,button.p{background:var(--acento);color:#fff}
+main{max-width:900px;margin:0 auto;padding:12px}
+.fade{animation:f .5s}@keyframes f{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:#fff;border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 4px 18px #e8a0bf33}
+.card h2,.card h3{margin:0 0 10px;color:var(--acento)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+input,textarea,select{width:100%;padding:9px;border:1px solid var(--rosa);border-radius:12px;font:inherit;background:#fffafc;margin:3px 0;color:var(--txt)}
+textarea{min-height:80px;resize:vertical}
+label{font-size:.85rem}
+.bar{height:14px;background:#f6e3ec;border-radius:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rosa),var(--acento));border-radius:10px;transition:width .6s}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.row>*{flex:0 0 auto}
+.big{font-size:2.2rem;text-align:center;font-style:italic;color:var(--acento)}
+.day{cursor:pointer;text-align:center;padding:8px;border-radius:14px;background:#fff;border:2px solid var(--rosa);font-size:.8rem}
+.day.we{background:#f3eafc;border-color:var(--lila)}.day.on{border-color:var(--acento);box-shadow:0 0 0 3px #e8a0bf55}
+.rate span{font-size:1.6rem;cursor:pointer;opacity:.25}.rate span.on{opacity:1}
+img.pv{max-width:140px;border-radius:14px;margin-top:6px;display:block}
+img.pv:not([src]){display:none}
+.diary{background:repeating-linear-gradient(#fffdf8,#fffdf8 27px,#f7dbe7 28px);border-left:6px solid var(--rosa)}
+.diary textarea{min-height:220px;background:transparent;line-height:28px;border:0}
+small{opacity:.8}
+.mood{font-size:1.6rem;background:none;box-shadow:none;padding:4px}.mood.on{background:var(--rosa)}
+iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;margin-top:8px}
+.thumb{width:100%;border-radius:14px;cursor:pointer}
+</style></head><body>
+<div id="authScreen" style="max-width:520px;margin:8vh auto;padding:18px;display:none">
+  <div class="card" style="text-align:center;padding:28px">
+    <div style="font-size:2.5rem">🌷</div><h2 style="color:var(--acento)">Bloom Diary</h2>
+    <p>Tu espacio personal, ahora sincronizado en la nube 💗</p>
+    <p id="authMessage" style="font-size:.9rem">Conecta tu proyecto de Firebase para continuar.</p>
+    <button class="b p" id="googleLogin" style="width:100%;padding:12px">Continuar con Google</button>
+    <p style="font-size:.78rem;opacity:.75">Tus registros se guardan en tu cuenta y podrás abrirlos desde otros dispositivos.</p>
+  </div>
+</div>
+<div id="appShell" style="display:none">
+<header><h1>🌷 Bloom Diary 🌷</h1><p id="lema">Florece a tu propio ritmo ✨</p></header>
+<nav id="nav"></nav>
+<div style="max-width:900px;margin:0 auto;padding:0 12px;display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:.8rem">
+  <span id="cloudStatus">☁️ Conectando...</span><span id="accountEmail"></span><button class="b" id="logoutBtn">Salir</button>
+</div>
+<main id="v"></main>
+</div>
+<script>
+/* ===== DATOS (se guardan solos en localStorage) ===== */
+
+const K='bloomdiary';
+
+const DEFAULT_STATE={
+  pf:{},wg:2000,w:{},f:{},
+  iv:{run:0,acc:0,since:0,end:0,si:'',ei:'',h:[]},
+  dr:[],sg:10000,st:{},vd:[]
+};
+
+function normalizeState(data){
+  const s=data && typeof data==='object' && !Array.isArray(data)
+    ? data : {};
+
+  return {
+    ...DEFAULT_STATE,
+    ...s,
+    pf:{...DEFAULT_STATE.pf,...(s.pf||{})},
+    w:s.w||{},
+    f:s.f||{},
+    iv:{...DEFAULT_STATE.iv,...(s.iv||{})},
+    dr:Array.isArray(s.dr)?s.dr:[],
+    st:s.st||{},
+    vd:Array.isArray(s.vd)?s.vd:[]
+  };
+}
+
+let S=normalizeState(
+  JSON.parse(localStorage.getItem(K)||'null')
+);
+
+let cur='inicio',fd=null;
+
+const sv=()=>{
+  try{
+    localStorage.setItem(K,JSON.stringify(S));
+    if(!window.__bloomApplyingRemote)
+      window.__bloomQueueSave?.(S);
+  }catch(e){
+    alert('El almacenamiento está lleno 🌸 Exporta tus datos o quita algunas fotos.');
+  }
+};
+
+window.__bloomReplaceState=(data)=>{
+  S=normalizeState(data);
+  try{
+    localStorage.setItem(K,JSON.stringify(S));
+  }catch(e){}
+  document.documentElement.style.setProperty(
+    '--acento',S.pf.c||'#e8a0bf'
+  );
+  go(cur);
+};
+
+const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0');
+const dk=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,td=()=>dk(new Date());
+const DS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const MS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const lt=k=>{const[y,m,d]=k.split('-');return new Date(y,m-1,d)};
+const lng=k=>{const d=lt(k);return `${DS[d.getDay()]} ${d.getDate()} — ${d.getDate()} de ${MS[d.getMonth()]} de ${d.getFullYear()}`};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const get=(o,p)=>p.split('.').reduce((a,x)=>a&&a[x],o);
+const set=(o,p,v)=>{const a=p.split('.');a.slice(0,-1).forEach(x=>o=o[x]=o[x]||{});o[a.pop()]=v};
+const waterTotal=k=>(S.w[k]||[]).reduce((a,x)=>a+x.ml,0);
+const pct=(a,b)=>Math.min(100,b?Math.round(a/b*100):0);
+const bar=p=>`<div class="bar"><i style="width:${p}%"></i></div>`;
+function resize(file,cb){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const m=700,s=Math.min(1,m/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.7))};i.src=r.result};r.readAsDataURL(file)}
+document.documentElement.style.setProperty('--acento',S.pf.c||'#e8a0bf');
+
+/* ===== NAVEGACIÓN ===== */
+const TABS=[['inicio','🌷 Inicio'],['intervalos','⏳ Intervalos'],['agua','💧 Hidratación'],['comida','🍓 Alimentación'],['diario','🎀 Diario'],['mov','🌸 Movimiento'],['perfil','🪞 Perfil']];
+function go(t){cur=t;$('#nav').innerHTML=TABS.map(x=>`<button class="${x[0]==t?'on':''}" onclick="go('${x[0]}')">${x[1]}</button>`).join('');$('#v').innerHTML=`<div class="fade">${PG[t]()}</div>`;if(t=='comida'&&fd)openDay(fd);if(t=='diario')dlist();window.scrollTo(0,0)}
+const PG={};
+
+/* ===== INICIO ===== */
+const FR=['Florece a tu propio ritmo ✨','Hoy también cuenta, con calma 🌷','Cuidarte es un acto de amor 🎀','Un pasito suave es suficiente 🌸','Mereces tiempo para ti 🍓','Eres un jardín en crecimiento 🌼'];
+PG.inicio=()=>{const t=td(),d=new Date(),n=S.pf.n||'bonita',f=S.f[t]||{};
+ const meals=['des','alm','cen','snk'].filter(m=>f[m]&&f[m].n).length;
+ const fr=FR[Math.floor(Date.now()/864e5)%FR.length];$('#lema').textContent=fr;
+ return `<div class="card"><h2>Hola, ${esc(n)} 💗</h2><p>${DS[d.getDay()]}, ${d.getDate()} de ${MS[d.getMonth()]} de ${d.getFullYear()}</p><p><i>${fr}</i></p></div>
+ <div class="grid"><div class="card"><h3>💧 Hidratación</h3>${waterTotal(t)} / ${S.wg} ml${bar(pct(waterTotal(t),S.wg))}</div>
+ <div class="card"><h3>🍓 Alimentación</h3>${meals} de 4 momentos registrados${bar(meals*25)}</div>
+ <div class="card"><h3>🌸 Movimiento</h3>${S.st[t]||0} / ${S.sg} pasos${bar(pct(S.st[t]||0,S.sg))}</div></div>
+ <div class="card"><h3>Accesos rápidos</h3><div class="row">${TABS.slice(1).map(x=>`<button class="b" onclick="go('${x[0]}')">${x[1]}</button>`).join('')}</div></div>`};
+
+/* ===== INTERVALOS (registro neutral de tiempo) ===== */
+const iv=()=>S.iv,ivEl=()=>iv().acc+(iv().run?Date.now()-iv().since:0);
+const hm=ms=>{ms=Math.max(0,ms);const m=Math.floor(ms/6e4);return `${Math.floor(m/60)} h ${m%60} min`};
+const loc=ms=>{const d=new Date(ms);return `${dk(d)} ${pad(d.getHours())}:${pad(d.getMinutes())}`};
+PG.intervalos=()=>`<div class="card"><h2>⏳ Intervalos</h2><p><small>Un registro neutral del tiempo transcurrido.</small></p>
+ <div class="grid"><div><label>Inicio</label><input type="datetime-local" id="is" value="${iv().si}"></div><div><label>Finalización (opcional)</label><input type="datetime-local" id="ie" value="${iv().ei}"></div></div>
+ <div class="big" id="ivt"></div><div class="big" id="ivr" style="font-size:1.2rem"></div>
+ <div class="row" style="justify-content:center;margin-top:10px"><button class="b p" onclick="ivGo()">▶ Iniciar</button><button class="b" onclick="ivPause()">⏸ Pausar</button><button class="b" onclick="ivReset()">↺ Reiniciar</button></div></div>
+ <div class="card"><h3>Historial</h3>${iv().h.map((h,i)=>`<p>${h.a} → ${h.b} · <b>${hm(h.ms)}</b> <button class="b" onclick="ivDel(${i})">🗑</button></p>`).join('')||'<small>Aún no hay intervalos guardados.</small>'}</div>`;
+function ivTick(){const e=$('#ivt');if(!e)return;e.textContent=hm(ivEl());const r=$('#ivr');r.textContent=iv().end?`Tiempo restante: ${hm(iv().end-Date.now())}`:''}
+function ivGo(){const I=iv(),s=$('#is').value,e=$('#ie').value;I.si=s;I.ei=e;I.end=e?+new Date(e):0;if(!I.run){if(!I.acc&&s)I.acc=Math.max(0,Date.now()-new Date(s));I.since=Date.now();I.run=1}sv();ivTick()}
+function ivPause(){const I=iv();if(I.run){I.acc+=Date.now()-I.since;I.run=0}sv();ivTick()}
+function ivReset(){const I=iv(),ms=ivEl();if(ms>6e4)I.h.unshift({a:loc(Date.now()-ms),b:loc(Date.now()),ms});Object.assign(I,{run:0,acc:0,since:0,end:0,si:'',ei:''});sv();go('intervalos')}
+function ivDel(i){iv().h.splice(i,1);sv();go('intervalos')}
+setInterval(ivTick,1000);
+
+/* ===== HIDRATACIÓN ===== */
+PG.agua=()=>{const t=td(),L=S.w[t]||[],tot=waterTotal(t);
+ return `<div class="card"><h2>💧 Hidratación</h2><div class="big">${tot} ml</div>${bar(pct(tot,S.wg))}
+ <p>Referencia de hoy: <input type="number" style="width:110px" value="${S.wg}" onchange="S.wg=+this.value||2000;sv();go('agua')"> ml <small>(editable, es solo una guía)</small></p>
+ <div class="row">${[100,150,200,250,500].map(n=>`<button class="b p" onclick="addW(${n})">+${n}</button>`).join('')}
+ <input type="number" id="wc" placeholder="Otra cantidad" style="width:140px"><button class="b" onclick="addW(+$('#wc').value)">Agregar</button></div></div>
+ <div class="card"><h3>Registros de hoy</h3>${L.map(x=>`<p>${x.t} · <input type="number" value="${x.ml}" style="width:90px" onchange="editW('${t}',${x.id},this.value)"> ml <button class="b" onclick="delW('${t}',${x.id})">🗑</button></p>`).join('')||'<small>Aún nada hoy 🌷</small>'}</div>
+ <div class="card"><h3>Historial diario</h3>${Object.keys(S.w).sort().reverse().map(k=>`<p>${lng(k)}: <b>${waterTotal(k)} ml</b></p>`).join('')||'<small>Sin historial.</small>'}</div>`};
+function addW(n){if(!n||n<=0)return;const t=td(),d=new Date();(S.w[t]=S.w[t]||[]).push({id:Date.now(),ml:n,t:`${pad(d.getHours())}:${pad(d.getMinutes())}`});sv();go('agua')}
+function delW(k,id){S.w[k]=S.w[k].filter(x=>x.id!=id);sv();go('agua')}
+function editW(k,id,v){const x=S.w[k].find(x=>x.id==id);if(x&&+v>0)x.ml=+v;sv();go('agua')}
+
+/* ===== ALIMENTACIÓN ===== */
+const days=[...Array(31)].map((_,i)=>dk(new Date(2026,10,16+i)));
+PG.comida=()=>`<div class="card"><h2>🍓 Alimentación</h2><p><small>Del 16 de noviembre al 16 de diciembre de 2026. Toca una fecha.</small></p>
+ <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(110px,1fr))">${days.map(k=>{const d=lt(k),we=d.getDay()%6==0;return `<div class="day ${we?'we':''} ${k==fd?'on':''}" onclick="openDay('${k}')">${S.f[k]?'💗 ':''}<b>${DS[d.getDay()].slice(0,3)} ${d.getDate()}</b><br>${we?'🎀 Fin de semana':'🌿 Día de semana'}</div>`}).join('')}</div></div><div id="day"></div>`;
+function meal(k,e,t,sn){const f=(S.f[fd]||{})[k]||{};const fl=(c,l,ta)=>`<label>${l}</label>${ta?'<textarea':'<input'} data-k="${k}.${c}" ${ta?`>${esc(f[c])}</textarea>`:`value="${esc(f[c])}">`}`;
+ return `<div class="card"><h3>${e} ${t}</h3><div class="grid"><div><label>Hora</label><input type="time" data-k="${k}.h" value="${f.h||''}"></div><div>${fl('n',sn?'Alimentos consumidos':'Nombre de los alimentos')}</div><div>${fl('p',sn?'Cantidad aproximada':'Porciones / cantidades')}</div>${sn?'':`<div>${fl('i','Ingredientes')}</div>`}</div>${fl('d','Descripción',1)}
+ <label class="btn">📷 Foto<input type="file" accept="image/*" hidden onchange="ph(this,'${k}')"></label><img class="pv" data-k="${k}.f" id="im-${k}" ${f.f?`src="${f.f}"`:''}></div>`}
+function rate(k,ic,v){return `<div class="rate" data-k="${k}" data-v="${v||0}">${[1,2,3,4,5].map(i=>`<span class="${i<=v?'on':''}" onclick="rt(this,${i})">${ic}</span>`).join('')}</div>`}
+function openDay(k){fd=k;document.querySelectorAll('.day').forEach(x=>x.classList.remove('on'));const d=S.f[k]||{},hab=['Dormí bien','Me mantuve hidratada','Tuve momentos de descanso','Realicé alguna actividad física','Tuve tiempo para mí'];
+ $('#day').innerHTML=`<div class="card"><h2>${lng(k)}</h2><small>Se guarda automáticamente 💗</small></div>
+ ${meal('des','🍓','Desayuno')}${meal('alm','🥗','Almuerzo')}${meal('cen','🌙','Cena')}${meal('snk','🍪','Snacks y alimentos adicionales',1)}
+ <div class="card"><h3>Bienestar</h3><div class="grid"><div><label>Horas de sueño</label><input type="number" step=".5" data-k="sue" value="${d.sue??''}"></div><div><label>Agua consumida (ml)</label><input type="number" data-k="ag" value="${d.ag??waterTotal(k)}"></div></div>
+ <label>Hambre</label>${rate('ham','🌸',d.ham)}<label>Saciedad</label>${rate('sac','🌸',d.sac)}<label>Energía</label>${rate('ene','⭐',d.ene)}</div>
+ <div class="card"><h3>Hábitos</h3>${hab.map((h,i)=>`<p><label><input type="checkbox" style="width:auto" data-k="hab.${i}" ${get(d,'hab.'+i)?'checked':''}> ${h}</label></p>`).join('')}
+ <label>Observaciones</label><textarea data-k="obs">${esc(d.obs)}</textarea>
+ <label>Calorías (opcional, solo informativo)</label><input type="number" data-k="kc" value="${d.kc??''}"></div>`;
+ $('#day').oninput=$('#day').onchange=saveDay;$('#day').scrollIntoView({behavior:'smooth'});
+ document.querySelectorAll('.day').forEach(x=>{if(x.getAttribute('onclick').includes(k))x.classList.add('on')})}
+function saveDay(){if(!fd)return;const d=S.f[fd]||{};document.querySelectorAll('#day [data-k]').forEach(e=>{let v;if(e.type=='checkbox')v=e.checked;else if(e.dataset.v!==undefined)v=+e.dataset.v;else if(e.tagName=='IMG')v=e.getAttribute('src')||'';else v=e.value;set(d,e.dataset.k,v)});S.f[fd]=d;sv()}
+function rt(el,i){const p=el.parentNode;p.dataset.v=p.dataset.v==i?0:i;[...p.children].forEach((s,j)=>s.classList.toggle('on',j<p.dataset.v));saveDay()}
+function ph(el,k){if(el.files[0])resize(el.files[0],u=>{$('#im-'+k).src=u;saveDay()})}
+
+/* ===== DIARIO PERSONAL ===== */
+const MO=['😊','🥰','😌','😢','😴','😠','🤍'];let mood='😊',eid=null;
+PG.diario=()=>`<div class="card diary"><h2>🎀 Mi diario</h2><div class="grid"><div><label>Fecha</label><input type="date" id="dd" value="${td()}"></div><div><label>Título</label><input id="dt"></div></div>
+ <div>${MO.map(m=>`<button class="b mood ${m==mood?'on':''}" onclick="mood='${m}';document.querySelectorAll('.mood').forEach(x=>x.classList.toggle('on',x.textContent=='${m}'))">${m}</button>`).join('')}</div>
+ <textarea id="dx" placeholder="Querido diario..."></textarea><button class="b p" onclick="dsave()">Guardar entrada</button> <button class="b" onclick="go('diario')">Nueva</button></div>
+ <div class="card"><h3>Entradas anteriores</h3><input id="dq" placeholder="Buscar por título o fecha (2026-11-20)" oninput="dlist()"><div id="dl"></div></div>`;
+function dsave(){const o={id:eid||Date.now(),d:$('#dd').value,t:$('#dt').value||'Sin título',m:mood,x:$('#dx').value};if(eid)S.dr=S.dr.map(e=>e.id==eid?o:e);else S.dr.push(o);sv();eid=null;go('diario')}
+function dlist(){const q=($('#dq')?.value||'').toLowerCase();$('#dl').innerHTML=S.dr.filter(e=>(e.t+e.d).toLowerCase().includes(q)).sort((a,b)=>b.d.localeCompare(a.d)).map(e=>`<div class="card" style="background:#fffafc"><b>${e.m} ${esc(e.t)}</b> <small>${e.d}</small><p style="white-space:pre-wrap">${esc(e.x)}</p><button class="b" onclick="dedit(${e.id})">✏️ Editar</button> <button class="b" onclick="ddel(${e.id})">🗑</button></div>`).join('')||'<small>Sin entradas.</small>'}
+function dedit(id){const e=S.dr.find(x=>x.id==id);eid=id;mood=e.m;$('#dd').value=e.d;$('#dt').value=e.t;$('#dx').value=e.x;document.querySelectorAll('.mood').forEach(x=>x.classList.toggle('on',x.textContent==mood));window.scrollTo(0,0)}
+function ddel(id){if(confirm('¿Eliminar esta entrada?')){S.dr=S.dr.filter(e=>e.id!=id);sv();dlist()}}
+
+/* ===== MOVIMIENTO ===== */
+let vid=null;
+const yid=u=>(u.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/)||[])[1];
+PG.mov=()=>{const t=td(),n=S.st[t]||0;return `<div class="card"><h2>🌸 Pasos</h2><div class="big">${n} / ${S.sg}</div>${bar(pct(n,S.sg))}<p><small>Cada paso suma, sin presión 🌷</small></p>
+ <div class="row"><input type="number" id="sn" placeholder="Pasos de hoy" value="${n||''}" style="width:150px"><button class="b p" onclick="S.st['${t}']=+$('#sn').value||0;sv();go('mov')">Guardar</button>
+ <label>Meta</label><input type="number" style="width:110px" value="${S.sg}" onchange="S.sg=+this.value||10000;sv();go('mov')"></div>
+ ${Object.keys(S.st).sort().reverse().map(k=>`<p>${lng(k)}: <b>${S.st[k]}</b> pasos</p>`).join('')}</div>
+ <div class="card"><h2>▶ Rutinas de YouTube</h2><div class="grid"><input id="vu" placeholder="Enlace de YouTube"><input id="vn" placeholder="Nombre"><input id="vc" placeholder="Categoría (yoga, baile...)"></div><textarea id="vd" placeholder="Descripción" style="min-height:50px"></textarea><button class="b p" onclick="vsave()">Guardar video</button> <button class="b" onclick="vid=null;go('mov')">Limpiar</button></div>
+ <div class="grid">${S.vd.map(v=>`<div class="card"><div id="pl${v.id}"><img class="thumb" src="https://img.youtube.com/vi/${v.y}/hqdefault.jpg" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.youtube-nocookie.com/embed/${v.y}&quot; allowfullscreen></iframe>'" alt="miniatura"></div><b>${esc(v.n)}</b><br><small>🏷 ${esc(v.c)}</small><p>${esc(v.d)}</p><button class="b" onclick="vedit(${v.id})">✏️</button> <button class="b" onclick="vdel(${v.id})">🗑</button></div>`).join('')}</div>`};
+function vsave(){const u=$('#vu').value,y=yid(u);if(!y)return alert('Pega un enlace válido de YouTube 🌸');const o={id:vid||Date.now(),u,y,n:$('#vn').value||'Rutina',c:$('#vc').value||'General',d:$('#vd').value};if(vid)S.vd=S.vd.map(v=>v.id==vid?o:v);else S.vd.push(o);vid=null;sv();go('mov')}
+function vedit(id){const v=S.vd.find(x=>x.id==id);vid=id;$('#vu').value=v.u;$('#vn').value=v.n;$('#vc').value=v.c;$('#vd').value=v.d;$('#vu').scrollIntoView()}
+function vdel(id){if(confirm('¿Eliminar video?')){S.vd=S.vd.filter(v=>v.id!=id);sv();go('mov')}}
+
+/* ===== PERFIL ===== */
+PG.perfil=()=>{const p=S.pf;return `<div class="card"><h2>🪞 Mi perfil</h2>${p.ph?`<img class="pv" src="${p.ph}" style="width:120px;height:120px;object-fit:cover;border-radius:50%">`:''}
+ <label class="btn">📷 Foto de perfil<input type="file" accept="image/*" hidden onchange="if(this.files[0])resize(this.files[0],u=>{S.pf.ph=u;sv();go('perfil')})"></label>
+ <label>Nombre o apodo</label><input id="pn" value="${esc(p.n)}"><label>Fecha de nacimiento</label><input type="date" id="pb" value="${p.b||''}">
+ <label>Descripción</label><textarea id="pd">${esc(p.d)}</textarea><label>Color favorito</label><input type="color" id="pc" value="${p.c||'#e8a0bf'}"><label>Frase personal</label><input id="pf" value="${esc(p.f)}">
+ <p><button class="b p" onclick="psave()">Guardar</button></p></div>
+ <div class="card"><h3>Mis datos</h3><button class="b p" onclick="expo()">⬇ Exportar JSON</button></div>`};
+function psave(){Object.assign(S.pf,{n:$('#pn').value,b:$('#pb').value,d:$('#pd').value,c:$('#pc').value,f:$('#pf').value});document.documentElement.style.setProperty('--acento',S.pf.c);sv();go('perfil')}
+function expo(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:'application/json'}));a.download=`bloom-diary-${td()}.json`;a.click()}
+// Funciones usadas por los botones HTML (onclick) y por la capa de autenticación.
+Object.assign(window,{go,ivGo,ivPause,ivReset,ivDel,addW,delW,editW,openDay,rt,ph,dsave,dlist,dedit,ddel,vsave,vedit,vdel,psave,expo,resize});
+go('inicio');
+</script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
+
+// PASO PENDIENTE: reemplaza estos valores por los de tu aplicación web en Firebase.
+const firebaseConfig = {
+  apiKey: 'AIzaSyC3yMb34AjdeUk4mR209elxPeAWwCyKJX4',
+  authDomain: 'bloom-diary-fa0cf.firebaseapp.com',
+  projectId: 'bloom-diary-fa0cf',
+  storageBucket: 'bloom-diary-fa0cf.firebasestorage.app',
+  messagingSenderId: '201055323647',
+  appId: '1:201055323647:web:63a1fe9ad68268d76193ca',
+  measurementId: 'G-RKYE065S65'
+};
+
+const authScreen=document.getElementById('authScreen');
+const appShell=document.getElementById('appShell');
+const authMessage=document.getElementById('authMessage');
+const loginButton=document.getElementById('googleLogin');
+const statusLabel=document.getElementById('cloudStatus');
+const emailLabel=document.getElementById('accountEmail');
+const logoutButton=document.getElementById('logoutBtn');
+const configured=Object.values(firebaseConfig).every(v=>v && !v.startsWith('PEGA_'));
+
+if(!configured){
+  authScreen.style.display='block';
+  authMessage.textContent='Falta conectar tu proyecto de Firebase. No borres los textos de esta página; primero crea tu proyecto y pega aquí su configuración.';
+  loginButton.disabled=true;loginButton.textContent='Esperando configuración de Firebase';
+  statusLabel.textContent='⚙️ Falta configuración';
+}else{
+  try{
+    const app=initializeApp(firebaseConfig);
+    const auth=getAuth(app);
+    const db=getFirestore(app);
+    const provider=new GoogleAuthProvider();
+    let stopSnapshot=null,saveTimer=null,currentUid=null;
+    const userDoc=uid=>doc(db,'bloomDiaryUsers',uid);
+
+    loginButton.addEventListener('click',async()=>{
+      loginButton.disabled=true;authMessage.textContent='Abriendo Google...';
+      try{await signInWithPopup(auth,provider)}catch(e){authMessage.textContent='No se pudo iniciar sesión: '+e.message;loginButton.disabled=false}
+    });
+    logoutButton.addEventListener('click',()=>signOut(auth));
+
+    window.__bloomQueueSave=(state)=>{
+      if(!currentUid)return;
+      clearTimeout(saveTimer);
+      saveTimer=setTimeout(async()=>{
+        try{
+          const json=JSON.stringify(state);
+          // Firestore limita cada documento a 1 MiB. Las fotos incrustadas pueden superar ese tamaño.
+          if(new Blob([json]).size>850000){statusLabel.textContent='⚠️ Datos grandes: las fotos necesitan almacenamiento aparte';return}
+          statusLabel.textContent='☁️ Guardando...';
+          await setDoc(userDoc(currentUid),{data:state,updatedAt:serverTimestamp()});
+          statusLabel.textContent='☁️ Sincronizado';
+        }catch(e){statusLabel.textContent='⚠️ Error al sincronizar';console.error(e)}
+      },700);
+    };
+
+    onAuthStateChanged(auth,async user=>{
+      if(stopSnapshot){stopSnapshot();stopSnapshot=null}
+      currentUid=user?.uid||null;
+      if(!user){appShell.style.display='none';authScreen.style.display='block';emailLabel.textContent='';statusLabel.textContent='🔒 Sesión cerrada';loginButton.disabled=false;loginButton.textContent='Continuar con Google';return}
+      authScreen.style.display='none';appShell.style.display='block';emailLabel.textContent=user.email||'';statusLabel.textContent='☁️ Cargando tus datos...';
+      try{
+        const ref=userDoc(user.uid),snap=await getDoc(ref);
+        if(snap.exists()){
+          window.__bloomApplyingRemote=true;
+          window.__bloomReplaceState(snap.data().data);
+          window.__bloomApplyingRemote=false;
+        }else{
+          const local=JSON.parse(localStorage.getItem('bloomdiary')||'null');
+          await setDoc(ref,{data:local||{},updatedAt:serverTimestamp()});
+        }
+        stopSnapshot=onSnapshot(ref,s=>{
+          if(!s.exists()||!s.data()?.data)return;
+          window.__bloomApplyingRemote=true;
+          window.__bloomReplaceState(s.data().data);
+          window.__bloomApplyingRemote=false;
+          statusLabel.textContent='☁️ Sincronizado';
+        },err=>{statusLabel.textContent='⚠️ Sin conexión con la nube';console.error(err)});
+      }catch(e){window.__bloomApplyingRemote=false;statusLabel.textContent='⚠️ Error de acceso a datos';console.error(e);alert('No se pudieron cargar tus datos. Revisa la configuración y las reglas de Firestore.')}
+    });
+  }catch(e){authScreen.style.display='block';authMessage.textContent='Error al iniciar Firebase: '+e.message;console.error(e)}
+}
+</script></body></html>
