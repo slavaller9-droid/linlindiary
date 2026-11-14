@@ -2,45 +2,56 @@
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bloom Diary 🌷</title>
 <style>
-/* ===== COLORES (cámbialos aquí) ===== */
-/* NOTA: todo este CSS es IDÉNTICO al de tu versión original. No se tocó el diseño. */
-:root{--rosa:#f8c8dc;--polvo:#e8a0bf;--lila:#dccbf2;--crema:#fff8ee;--txt:#6b4a5e;--acento:#e8a0bf}
+/* ===== COLORES: el tema "Rosa pastel" son estos valores originales. Los otros temas se aplican desde Perfil. ===== */
+:root{--rosa:#f8c8dc;--polvo:#e8a0bf;--lila:#dccbf2;--crema:#fff8ee;--txt:#6b4a5e;--acento:#e8a0bf;--act:#e8a0bf;--onac:#fff;
+--b1:#fff8ee;--b2:#fdeef5;--b3:#efe6fa;--card:#fff;--bar:#f6e3ec;--wk:#f3eafc;--inp:#fffafc;--pap:#fffdf8;--line:#f7dbe7;--nav:#fff8eecc;--sh:232,160,191}
 *{box-sizing:border-box}
-body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(160deg,var(--crema),#fdeef5 60%,#efe6fa);color:var(--txt);min-height:100vh}
+body{margin:0;font-family:Georgia,'Times New Roman',serif;background:linear-gradient(160deg,var(--b1),var(--b2) 60%,var(--b3));color:var(--txt);min-height:100vh}
 header{text-align:center;padding:18px 10px 4px}
-header h1{margin:0;font-size:2rem;font-style:italic;color:var(--acento)}
+header h1{margin:0;font-size:2rem;font-style:italic;color:var(--act)}
 header p{margin:2px 0 0;font-size:.95rem}
-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:10px;position:sticky;top:0;background:#fff8eecc;backdrop-filter:blur(6px);z-index:5}
-nav button,.btn,button.b{border:0;border-radius:20px;padding:8px 14px;background:#fff;color:var(--txt);box-shadow:0 2px 8px #e8a0bf44;cursor:pointer;font:inherit;font-size:.9rem}
-nav button.on,.btn.p,button.p{background:var(--acento);color:#fff}
+nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:10px;position:sticky;top:0;background:var(--nav);backdrop-filter:blur(6px);z-index:5}
+nav button,.btn,button.b{border:0;border-radius:20px;padding:8px 14px;background:var(--card);color:var(--txt);box-shadow:0 2px 8px rgba(var(--sh),.27);cursor:pointer;font:inherit;font-size:.9rem}
+nav button.on,.btn.p,button.p{background:var(--acento);color:var(--onac)}
 main{max-width:900px;margin:0 auto;padding:12px}
 .fade{animation:f .5s}@keyframes f{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.card{background:#fff;border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 4px 18px #e8a0bf33}
-.card h2,.card h3{margin:0 0 10px;color:var(--acento)}
+.card{background:var(--card);border-radius:22px;padding:16px;margin:12px 0;box-shadow:0 4px 18px rgba(var(--sh),.2)}
+.card h2,.card h3{margin:0 0 10px;color:var(--act)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
-input,textarea,select{width:100%;padding:9px;border:1px solid var(--rosa);border-radius:12px;font:inherit;background:#fffafc;margin:3px 0;color:var(--txt)}
+input,textarea,select{width:100%;padding:9px;border:1px solid var(--rosa);border-radius:12px;font:inherit;background:var(--inp);margin:3px 0;color:var(--txt)}
 textarea{min-height:80px;resize:vertical}
 label{font-size:.85rem}
-.bar{height:14px;background:#f6e3ec;border-radius:10px;overflow:hidden}
+.bar{height:14px;background:var(--bar);border-radius:10px;overflow:hidden}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rosa),var(--acento));border-radius:10px;transition:width .6s}
 .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .row>*{flex:0 0 auto}
-.big{font-size:2.2rem;text-align:center;font-style:italic;color:var(--acento)}
-.day{cursor:pointer;text-align:center;padding:8px;border-radius:14px;background:#fff;border:2px solid var(--rosa);font-size:.8rem}
-.day.we{background:#f3eafc;border-color:var(--lila)}.day.on{border-color:var(--acento);box-shadow:0 0 0 3px #e8a0bf55}
+.big{font-size:2.2rem;text-align:center;font-style:italic;color:var(--act)}
+.day{cursor:pointer;text-align:center;padding:8px;border-radius:14px;background:var(--card);border:2px solid var(--rosa);font-size:.8rem}
+.day.we{background:var(--wk);border-color:var(--lila)}.day.on{border-color:var(--acento);box-shadow:0 0 0 3px rgba(var(--sh),.33)}
 .rate span{font-size:1.6rem;cursor:pointer;opacity:.25}.rate span.on{opacity:1}
 img.pv{max-width:140px;border-radius:14px;margin-top:6px;display:block}
 img.pv:not([src]){display:none}
-.diary{background:repeating-linear-gradient(#fffdf8,#fffdf8 27px,#f7dbe7 28px);border-left:6px solid var(--rosa)}
+.diary{background:repeating-linear-gradient(var(--pap),var(--pap) 27px,var(--line) 28px);border-left:6px solid var(--rosa)}
 .diary textarea{min-height:220px;background:transparent;line-height:28px;border:0}
 small{opacity:.8}
 .mood{font-size:1.6rem;background:none;box-shadow:none;padding:4px}.mood.on{background:var(--rosa)}
 iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;margin-top:8px}
 .thumb{width:100%;border-radius:14px;cursor:pointer}
+/* ===== NUEVO ===== */
+details.sec{margin:10px 0;border:1px solid var(--rosa);border-radius:16px;padding:6px 12px;background:var(--inp)}
+details.sec>summary{cursor:pointer;font-weight:bold;color:var(--act);padding:6px 0}
+.pvs,.gal{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pvi{position:relative}.pvi img,.gal img{width:96px;height:96px;object-fit:cover;border-radius:14px;cursor:pointer;display:block}
+.pvi button{position:absolute;top:-6px;right:-6px;padding:2px 8px;border-radius:50%}
+.sw{width:42px;height:42px;border-radius:50%;border:3px solid var(--card);box-shadow:0 2px 8px rgba(var(--sh),.4);cursor:pointer;padding:0}
+.sw.on{outline:3px solid var(--txt)}
+#lbx{position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:50;padding:12px}
+#lbx img{max-width:100%;max-height:100%;border-radius:12px}
+.ivs{font-size:1rem;text-align:center;margin:4px 0}
 </style></head><body>
 <div id="authScreen" style="max-width:520px;margin:8vh auto;padding:18px;display:none">
   <div class="card" style="text-align:center;padding:28px">
-    <div style="font-size:2.5rem">🌷</div><h2 style="color:var(--acento)">Bloom Diary</h2>
+    <div style="font-size:2.5rem">🌷</div><h2>Bloom Diary</h2>
     <p>Tu espacio personal, ahora sincronizado en la nube 💗</p>
     <p id="authMessage" style="font-size:.9rem">Conecta tu proyecto de Firebase para continuar.</p>
     <button class="b p" id="googleLogin" style="width:100%;padding:12px">Continuar con Google</button>
@@ -56,64 +67,26 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;margin-top:8px}
 <main id="v"></main>
 </div>
 
-<!-- =====================================================================
-     SCRIPT 1: la app (idéntico al tuyo, no se modificó nada de su lógica)
-     ===================================================================== -->
+<!-- ===================== SCRIPT 1: la app ===================== -->
 <script>
-/* ===== DATOS (se guardan solos en localStorage) ===== */
-
 const K='bloomdiary';
-
-const DEFAULT_STATE={
-  pf:{},wg:2000,w:{},f:{},
-  iv:{run:0,acc:0,since:0,end:0,si:'',ei:'',h:[]},
-  dr:[],sg:10000,st:{},vd:[]
-};
-
+const DEFAULT_STATE={pf:{},wg:2000,w:{},f:{},iv:{run:0,acc:0,since:0,end:0,si:'',ei:'',h:[],s:0,e:0,tz:''},dr:[],sg:10000,st:{},vd:[],cal:{start:'',end:'',weekdays:[1,2,3,4,5,6,0],extra:[],excluded:[],active:false}};
 function normalizeState(data){
-  const s=data && typeof data==='object' && !Array.isArray(data)
-    ? data : {};
-
-  return {
-    ...DEFAULT_STATE,
-    ...s,
-    pf:{...DEFAULT_STATE.pf,...(s.pf||{})},
-    w:s.w||{},
-    f:s.f||{},
-    iv:{...DEFAULT_STATE.iv,...(s.iv||{})},
-    dr:Array.isArray(s.dr)?s.dr:[],
-    st:s.st||{},
-    vd:Array.isArray(s.vd)?s.vd:[]
-  };
+  const s=data&&typeof data==='object'&&!Array.isArray(data)?data:{};
+  return {...DEFAULT_STATE,...s,pf:{...DEFAULT_STATE.pf,...(s.pf||{})},w:s.w||{},f:s.f||{},
+    iv:{...DEFAULT_STATE.iv,...(s.iv||{})},dr:Array.isArray(s.dr)?s.dr:[],st:s.st||{},vd:Array.isArray(s.vd)?s.vd:[],cal:{...DEFAULT_STATE.cal,...(s.cal||{}),weekdays:Array.isArray(s.cal?.weekdays)?s.cal.weekdays:DEFAULT_STATE.cal.weekdays,extra:Array.isArray(s.cal?.extra)?s.cal.extra:[],excluded:Array.isArray(s.cal?.excluded)?s.cal.excluded:[]}};
 }
-
-let S=normalizeState(
-  JSON.parse(localStorage.getItem(K)||'null')
-);
-
+let S=normalizeState(JSON.parse(localStorage.getItem(K)||'null'));
 let cur='inicio',fd=null;
-
 const sv=()=>{
-  try{
-    localStorage.setItem(K,JSON.stringify(S));
-    if(!window.__bloomApplyingRemote)
-      window.__bloomQueueSave?.(S);
-  }catch(e){
-    alert('El almacenamiento está lleno 🌸 Exporta tus datos o quita algunas fotos.');
-  }
+  try{localStorage.setItem(K,JSON.stringify(S));if(!window.__bloomApplyingRemote)window.__bloomQueueSave?.(S)}
+  catch(e){alert('El almacenamiento está lleno 🌸 Exporta tus datos o quita algunas fotos.')}
 };
-
 window.__bloomReplaceState=(data)=>{
   S=normalizeState(data);
-  try{
-    localStorage.setItem(K,JSON.stringify(S));
-  }catch(e){}
-  document.documentElement.style.setProperty(
-    '--acento',S.pf.c||'#e8a0bf'
-  );
-  go(cur);
+  try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}
+  applyTheme();go(cur);
 };
-
 const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0');
 const dk=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`,td=()=>dk(new Date());
 const DS=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
@@ -127,12 +100,41 @@ const waterTotal=k=>(S.w[k]||[]).reduce((a,x)=>a+x.ml,0);
 const pct=(a,b)=>Math.min(100,b?Math.round(a/b*100):0);
 const bar=p=>`<div class="bar"><i style="width:${p}%"></i></div>`;
 function resize(file,cb){const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const m=700,s=Math.min(1,m/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.7))};i.src=r.result};r.readAsDataURL(file)}
-document.documentElement.style.setProperty('--acento',S.pf.c||'#e8a0bf');
+
+/* ===== TEMAS DE COLOR ===== */
+const PRE={rosa:'#e8a0bf',lila:'#a98bd6',salvia:'#8fae96',crema:'#d2a45f'};
+const TV=['--acento','--act','--onac','--rosa','--lila','--b1','--b2','--b3','--txt','--card','--bar','--wk','--inp','--pap','--line','--nav','--sh'];
+function hsl(hex){const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let h=0,s=0;if(d){s=d/(1-Math.abs(2*l-1));h=mx==r?((g-b)/d+(g<b?6:0)):mx==g?(b-r)/d+2:(r-g)/d+4;h*=60}return[h,s*100,l*100,r,g,b]}
+function themeVars(hex){
+  const[h,s0,l,r,g,b]=hsl(hex),s=Math.min(Math.max(s0,25),65),H=(x)=>(h+x+360)%360;
+  const lumi=.299*r+.587*g+.114*b;
+  return {'--acento':hex,'--act':`hsl(${h},${s}%,${Math.min(l,38)}%)`,'--onac':lumi>.62?`hsl(${h},35%,20%)`:'#fff',
+   '--rosa':`hsl(${h},${s}%,86%)`,'--lila':`hsl(${H(35)},${s}%,87%)`,'--b1':`hsl(${h},60%,97%)`,'--b2':`hsl(${h},55%,95%)`,'--b3':`hsl(${H(30)},50%,94%)`,
+   '--txt':`hsl(${h},28%,28%)`,'--card':`hsl(${h},60%,99%)`,'--bar':`hsl(${h},45%,92%)`,'--wk':`hsl(${H(25)},50%,95%)`,'--inp':`hsl(${h},60%,98%)`,
+   '--pap':`hsl(${h},60%,99%)`,'--line':`hsl(${h},45%,91%)`,'--nav':`hsla(${h},60%,97%,.85)`,'--sh':`${Math.round(r*255)},${Math.round(g*255)},${Math.round(b*255)}`};
+}
+function curTheme(){const p=S.pf;return p.th||(p.c&&p.c.toLowerCase()!=='#e8a0bf'?'custom':'rosa')}
+function applyTheme(){
+  const st=document.documentElement.style,th=curTheme();
+  if(th=='rosa'){TV.forEach(v=>st.removeProperty(v));return}
+  const hex=th=='custom'?(S.pf.c||'#e8a0bf'):(PRE[th]||'#e8a0bf'),v=themeVars(hex);
+  TV.forEach(k=>st.setProperty(k,v[k]));
+}
+function setTheme(th,hex){
+  S.pf.th=th;S.pf.c=th=='custom'?hex:PRE[th];applyTheme();sv();
+  document.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x.dataset.t==th));
+  const pc=$('#pc');if(pc)pc.value=S.pf.c;
+}
+applyTheme();
 
 /* ===== NAVEGACIÓN ===== */
-const TABS=[['inicio','🌷 Inicio'],['intervalos','⏳ Intervalos'],['agua','💧 Hidratación'],['comida','🍓 Alimentación'],['diario','🎀 Diario'],['mov','🌸 Movimiento'],['perfil','🪞 Perfil']];
-function go(t){cur=t;$('#nav').innerHTML=TABS.map(x=>`<button class="${x[0]==t?'on':''}" onclick="go('${x[0]}')">${x[1]}</button>`).join('');$('#v').innerHTML=`<div class="fade">${PG[t]()}</div>`;if(t=='comida'&&fd)openDay(fd);if(t=='diario')dlist();window.scrollTo(0,0)}
+const TABS=[['inicio','🌷 Inicio'],['intervalos','⏳ Intervalos'],['agua','💧 Hidratación'],['comida','📅 Registro diario'],['diario','🎀 Diario'],['mov','🌸 Movimiento'],['perfil','🪞 Perfil']];
+function go(t){cur=t;$('#nav').innerHTML=TABS.map(x=>`<button class="${x[0]==t?'on':''}" onclick="go('${x[0]}')">${x[1]}</button>`).join('');$('#v').innerHTML=`<div class="fade">${PG[t]()}</div>`;if(t=='comida'&&fd)openDay(fd);if(t=='diario')dlist();if(t=='intervalos')ivTick();window.scrollTo(0,0)}
 const PG={};
+// Pasos: Health Connect (automático, viene de Firestore subcolección healthSteps) o registro manual.
+const hcSteps=k=>window.__bloomHC&&window.__bloomHC[k]?window.__bloomHC[k].steps:undefined;
+const stepsOf=k=>hcSteps(k)??(S.st[k]||0);
+window.__bloomHCUpdate=()=>{if((cur=='mov'||cur=='inicio')&&!document.activeElement?.matches('input,textarea'))go(cur)};
 
 /* ===== INICIO ===== */
 const FR=['Florece a tu propio ritmo ✨','Hoy también cuenta, con calma 🌷','Cuidarte es un acto de amor 🎀','Un pasito suave es suficiente 🌸','Mereces tiempo para ti 🍓','Eres un jardín en crecimiento 🌼'];
@@ -142,24 +144,129 @@ PG.inicio=()=>{const t=td(),d=new Date(),n=S.pf.n||'bonita',f=S.f[t]||{};
  return `<div class="card"><h2>Hola, ${esc(n)} 💗</h2><p>${DS[d.getDay()]}, ${d.getDate()} de ${MS[d.getMonth()]} de ${d.getFullYear()}</p><p><i>${fr}</i></p></div>
  <div class="grid"><div class="card"><h3>💧 Hidratación</h3>${waterTotal(t)} / ${S.wg} ml${bar(pct(waterTotal(t),S.wg))}</div>
  <div class="card"><h3>🍓 Alimentación</h3>${meals} de 4 momentos registrados${bar(meals*25)}</div>
- <div class="card"><h3>🌸 Movimiento</h3>${S.st[t]||0} / ${S.sg} pasos${bar(pct(S.st[t]||0,S.sg))}</div></div>
+ <div class="card"><h3>🌸 Movimiento</h3>${stepsOf(t)} / ${S.sg} pasos${bar(pct(stepsOf(t),S.sg))}</div></div>
  <div class="card"><h3>Accesos rápidos</h3><div class="row">${TABS.slice(1).map(x=>`<button class="b" onclick="go('${x[0]}')">${x[1]}</button>`).join('')}</div></div>`};
 
-/* ===== INTERVALOS (registro neutral de tiempo) ===== */
-const iv=()=>S.iv,ivEl=()=>iv().acc+(iv().run?Date.now()-iv().since:0);
+/* ===== INTERVALOS: inicio y fin elegidos libremente, cronómetro dinámico =====
+   Se guardan como milisegundos absolutos (UTC) en iv.s / iv.e: así no dependen de la zona horaria del aparato. */
+const iv=()=>S.iv|| (S.iv= {...DEFAULT_STATE.iv});
+function ivStamp(value){
+ if(value===null||value===undefined||value==='')return 0;
+ if(typeof value==='number')return value>0&&value<1e12?value*1000:value;
+ if(typeof value==='string'){
+  if(!value.trim())return 0;
+  const n=Number(value);
+  if(Number.isFinite(n)&&n>0)return n<1e12?n*1000:n;
+  const parsed=Date.parse(value);
+  return Number.isFinite(parsed)?parsed:0;
+ }
+ if(typeof value==='object'&&typeof value.toMillis==='function')return value.toMillis();
+ return 0;
+}
+const ivS=()=>ivStamp(iv().s)||ivStamp(iv().si);
+const ivE=()=>ivStamp(iv().e)||ivStamp(iv().end)||ivStamp(iv().ei);
 const hm=ms=>{ms=Math.max(0,ms);const m=Math.floor(ms/6e4);return `${Math.floor(m/60)} h ${m%60} min`};
 const loc=ms=>{const d=new Date(ms);return `${dk(d)} ${pad(d.getHours())}:${pad(d.getMinutes())}`};
-PG.intervalos=()=>`<div class="card"><h2>⏳ Intervalos</h2><p><small>Un registro neutral del tiempo transcurrido.</small></p>
- <div class="grid"><div><label>Inicio</label><input type="datetime-local" id="is" value="${iv().si}"></div><div><label>Finalización (opcional)</label><input type="datetime-local" id="ie" value="${iv().ei}"></div></div>
- <div class="big" id="ivt"></div><div class="big" id="ivr" style="font-size:1.2rem"></div>
- <div class="row" style="justify-content:center;margin-top:10px"><button class="b p" onclick="ivGo()">▶ Iniciar</button><button class="b" onclick="ivPause()">⏸ Pausar</button><button class="b" onclick="ivReset()">↺ Reiniciar</button></div></div>
- <div class="card"><h3>Historial</h3>${iv().h.map((h,i)=>`<p>${h.a} → ${h.b} · <b>${hm(h.ms)}</b> <button class="b" onclick="ivDel(${i})">🗑</button></p>`).join('')||'<small>Aún no hay intervalos guardados.</small>'}</div>`;
-function ivTick(){const e=$('#ivt');if(!e)return;e.textContent=hm(ivEl());const r=$('#ivr');r.textContent=iv().end?`Tiempo restante: ${hm(iv().end-Date.now())}`:''}
-function ivGo(){const I=iv(),s=$('#is').value,e=$('#ie').value;I.si=s;I.ei=e;I.end=e?+new Date(e):0;if(!I.run){if(!I.acc&&s)I.acc=Math.max(0,Date.now()-new Date(s));I.since=Date.now();I.run=1}sv();ivTick()}
-function ivPause(){const I=iv();if(I.run){I.acc+=Date.now()-I.since;I.run=0}sv();ivTick()}
-function ivReset(){const I=iv(),ms=ivEl();if(ms>6e4)I.h.unshift({a:loc(Date.now()-ms),b:loc(Date.now()),ms});Object.assign(I,{run:0,acc:0,since:0,end:0,si:'',ei:''});sv();go('intervalos')}
+const fmt=ms=>{
+ ms=Math.max(0,Math.floor(ms/1000));
+ const days=Math.floor(ms/86400),hours=Math.floor((ms%86400)/3600),minutes=Math.floor((ms%3600)/60),seconds=ms%60;
+ return (days?`${days} ${days===1?'día':'días'} : `:'')+
+ `${hours} ${hours===1?'hora':'horas'} : ${pad(minutes)} ${minutes===1?'minuto':'minutos'} : ${pad(seconds)} ${seconds===1?'segundo':'segundos'}`;
+};
+const dPart=ms=>ms?dk(new Date(ms)):'';
+const tPart=ms=>{if(!ms)return '';const d=new Date(ms);return `${pad(d.getHours())}:${pad(d.getMinutes())}`};
+function makeLocalDate(dateValue,timeValue){
+ const [y,m,d]=dateValue.split('-').map(Number);
+ const [hh,mm]=timeValue.split(':').map(Number);
+ const value=new Date(y,m-1,d,hh,mm,0,0);
+ return Number.isNaN(value.getTime())?0:value.getTime();
+}
+PG.intervalos=()=>{const s=ivS(),e=ivE();return `<div class="card"><h2>⏳ Intervalos</h2><p><small>Configura cuándo empieza y termina tu intervalo.</small></p>
+ <div class="grid"><div><label>Fecha de inicio</label><input type="date" id="isd" value="${dPart(s)}"></div><div><label>Hora de inicio</label><input type="time" id="ist" value="${tPart(s)}"></div>
+ <div><label>Fecha de finalización</label><input type="date" id="ied" value="${dPart(e)}"></div><div><label>Hora de finalización</label><input type="time" id="iet" value="${tPart(e)}"></div></div>
+ <p id="ivm" style="color:var(--act);min-height:1.2em;margin:4px 0"></p>
+ <div class="row"><button class="b p" onclick="ivSave()">💾 Guardar intervalo</button><button class="b" onclick="ivClear()">↺ Archivar y limpiar</button></div></div>
+ <div class="card" style="text-align:center;padding:26px 18px">
+ <div id="ivstatus" style="font-weight:bold;color:var(--act);margin-bottom:8px">⏳ Configura tu intervalo</div>
+ <div id="ivcaption" style="font-size:.95rem">Tiempo transcurrido</div>
+ <div id="ivt" style="font-size:clamp(2.2rem,8vw,3.4rem);font-weight:700;letter-spacing:2px;line-height:1.35;margin:8px 0;font-variant-numeric:tabular-nums">00:00:00</div>
+ <div style="max-width:460px;margin:12px auto 8px;background:var(--inp);height:12px;border-radius:20px;overflow:hidden"><div id="ivprogress" style="height:100%;width:0%;background:var(--act);border-radius:20px;transition:width .5s"></div></div>
+ <div id="ivpercent" style="font-size:.85rem;opacity:.8;margin-bottom:14px">0 % completado</div>
+ <div style="display:flex;justify-content:center;gap:22px;flex-wrap:wrap">
+  <div><small>Tiempo transcurrido</small><div id="ivelapsed" style="font-weight:bold;font-variant-numeric:tabular-nums">00:00:00</div></div>
+  <div><small>Tiempo restante</small><div id="ivremaining" style="font-weight:bold;font-variant-numeric:tabular-nums">00:00:00</div></div>
+ </div>
+ <div id="ivr" style="margin-top:14px;font-size:.85rem;opacity:.8"></div></div>
+ <div class="card"><h3>Historial</h3>${iv().h.map((h,i)=>`<p>${h.a} → ${h.b} · <b>${hm(h.ms)}</b> <button class="b" onclick="ivDel(${i})">🗑</button></p>`).join('')||'<small>Aún no hay intervalos guardados.</small>'}</div>`};
+function ivDigital(ms){
+ const total=Math.max(0,Math.floor(ms/1000));
+ const h=Math.floor(total/3600),m=Math.floor((total%3600)/60),s=total%60;
+ return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+function ivTick(){
+ const t=$('#ivt');if(!t)return;
+ const s=ivS(),e=ivE(),now=Date.now();
+ const status=$('#ivstatus'),caption=$('#ivcaption'),elapsed=$('#ivelapsed'),remaining=$('#ivremaining'),bar=$('#ivprogress'),percent=$('#ivpercent'),r=$('#ivr');
+ const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+ if(!s||!e||e<=s){
+  set('#ivstatus','⏳ Configura y guarda tu intervalo');
+  set('#ivcaption','El contador aparecerá aquí');
+  t.textContent='00:00:00';set('#ivelapsed','00:00:00');set('#ivremaining','00:00:00');
+  set('#ivpercent','0 % completado');set('#ivr','');if(bar)bar.style.width='0%';return;
+ }
+ const total=e-s,done=Math.max(0,Math.min(total,now-s)),left=Math.max(0,e-now),pct=Math.round(done/total*100);
+ if(now<s){
+  set('#ivstatus','🌷 Aún no comienza');
+  set('#ivcaption','Tiempo que falta para iniciar');
+  t.textContent=ivDigital(s-now);
+  set('#ivelapsed','00:00:00');set('#ivremaining',ivDigital(e-s));
+  set('#ivpercent','El intervalo todavía no ha comenzado');
+  if(bar)bar.style.width='0%';
+  set('#ivr',`Inicio: ${loc(s)} · Finaliza: ${loc(e)}`);
+ }else if(now<e){
+  set('#ivstatus','💗 Intervalo en curso');
+  set('#ivcaption','Tiempo transcurrido');
+  t.textContent=ivDigital(done);
+  set('#ivelapsed',ivDigital(done));set('#ivremaining',ivDigital(left));
+  set('#ivpercent',`${pct} % completado`);
+  if(bar)bar.style.width=`${pct}%`;
+  set('#ivr',`Finaliza el ${loc(e)}`);
+ }else{
+  set('#ivstatus','✨ ¡Intervalo finalizado!');
+  set('#ivcaption','Duración total');
+  t.textContent=ivDigital(total);
+  set('#ivelapsed',ivDigital(total));set('#ivremaining','00:00:00');
+  set('#ivpercent','100 % completado');
+  if(bar)bar.style.width='100%';
+  set('#ivr',`Del ${loc(s)} al ${loc(e)}`);
+ }
+}
+function ivSave(){
+ const m=$('#ivm'),v=id=>$('#'+id)?.value||'';
+ if(!v('isd')||!v('ist')||!v('ied')||!v('iet')){
+  m.textContent='Completa fecha y hora de inicio y de finalización 🌸';return;
+ }
+ const s=makeLocalDate(v('isd'),v('ist')),e=makeLocalDate(v('ied'),v('iet'));
+ if(!s||!e){m.textContent='Fecha u hora no válida 🌸';return}
+ if(e<=s){m.textContent='La finalización debe ser posterior al inicio 🌸';return}
+ Object.assign(iv(),{s,e,tz:Intl.DateTimeFormat().resolvedOptions().timeZone,si:'',ei:'',end:0,run:0,acc:0,since:0});
+ sv();m.textContent='Guardado ✔';ivTick();
+}
+function ivClear(){
+ const I=iv(),s=ivS(),e=ivE();
+ if(s&&e&&Date.now()>s){const finish=Math.min(Date.now(),e);I.h.unshift({a:loc(s),b:loc(finish),ms:finish-s})}
+ Object.assign(I,{s:0,e:0,tz:'',si:'',ei:'',end:0,run:0,acc:0,since:0});
+ sv();go('intervalos');
+}
 function ivDel(i){iv().h.splice(i,1);sv();go('intervalos')}
-setInterval(ivTick,1000);
+// Reloj independiente de la navegación: se refresca aunque el navegador no vuelva a dibujar la vista.
+if(window.__bloomIvTicker)window.clearInterval(window.__bloomIvTicker);
+window.__bloomIvTicker=window.setInterval(()=>{
+ try{if(cur==='intervalos')ivTick()}catch(err){console.error('Error actualizando el cronómetro:',err)}
+},1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&cur==='intervalos')ivTick()});
+window.addEventListener('focus',()=>{if(cur==='intervalos')ivTick()});
+window.__bloomIvRefresh=ivTick;
 
 /* ===== HIDRATACIÓN ===== */
 PG.agua=()=>{const t=td(),L=S.w[t]||[],tot=waterTotal(t);
@@ -173,46 +280,125 @@ function addW(n){if(!n||n<=0)return;const t=td(),d=new Date();(S.w[t]=S.w[t]||[]
 function delW(k,id){S.w[k]=S.w[k].filter(x=>x.id!=id);sv();go('agua')}
 function editW(k,id,v){const x=S.w[k].find(x=>x.id==id);if(x&&+v>0)x.ml=+v;sv();go('agua')}
 
-/* ===== ALIMENTACIÓN ===== */
-const days=[...Array(31)].map((_,i)=>dk(new Date(2026,10,16+i)));
-PG.comida=()=>`<div class="card"><h2>🍓 Alimentación</h2><p><small>Del 16 de noviembre al 16 de diciembre de 2026. Toca una fecha.</small></p>
- <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(110px,1fr))">${days.map(k=>{const d=lt(k),we=d.getDay()%6==0;return `<div class="day ${we?'we':''} ${k==fd?'on':''}" onclick="openDay('${k}')">${S.f[k]?'💗 ':''}<b>${DS[d.getDay()].slice(0,3)} ${d.getDate()}</b><br>${we?'🎀 Fin de semana':'🌿 Día de semana'}</div>`}).join('')}</div></div><div id="day"></div>`;
+/* ===== REGISTRO DIARIO (antes Alimentación; ahora reúne día, comidas, bienestar, hábitos y seguimiento) ===== */
+function calendarDates(){
+ const c=S.cal||DEFAULT_STATE.cal;
+ if(!c.active||!c.start||!c.end)return [];
+ const a=lt(c.start),b=lt(c.end),out=[];
+ for(let d=new Date(a);d<=b;d.setDate(d.getDate()+1)){
+  const k=dk(d);
+  if((c.weekdays||[]).includes(d.getDay())&&!(c.excluded||[]).includes(k))out.push(k);
+ }
+ for(const k of (c.extra||[])){if(!out.includes(k)&&!(c.excluded||[]).includes(k))out.push(k)}
+ return out.sort();
+}
+function calCreate(){
+ const start=$('#calStart').value,end=$('#calEnd').value;
+ if(!start||!end)return alert('Elige una fecha de inicio y una fecha final 🌷');
+ if(end<start)return alert('La fecha final debe ser posterior o igual a la inicial 🌷');
+ const weekdays=[...document.querySelectorAll('[data-weekday]:checked')].map(x=>+x.dataset.weekday);
+ S.cal={...(S.cal||{}),start,end,weekdays,extra:S.cal?.extra||[],excluded:[],active:true};
+ sv();go('comida');
+}
+function calPreset(kind){
+ const vals=kind==='all'?[0,1,2,3,4,5,6]:kind==='weekend'?[0,6]:[1,2,3,4,5];
+ document.querySelectorAll('[data-weekday]').forEach(x=>x.checked=vals.includes(+x.dataset.weekday));
+}
+function calAddDate(){
+ const k=$('#calExtra').value;if(!k)return;
+ const c=S.cal||(S.cal={...DEFAULT_STATE.cal});
+ c.extra=[...new Set([...(c.extra||[]),k])];c.excluded=(c.excluded||[]).filter(x=>x!==k);
+ sv();go('comida');
+}
+function calRemoveDate(k){
+ const c=S.cal;c.excluded=[...new Set([...(c.excluded||[]),k])];
+ sv();go('comida');
+}
+PG.comida=()=>{
+ const c=S.cal||DEFAULT_STATE.cal,days=calendarDates(),saved=Object.keys(S.f||{}).filter(k=>S.f[k]&&Object.keys(S.f[k]).length&&!days.includes(k)).sort().reverse();
+ return `<div class="card"><h2>📅 Mi registro diario</h2>
+ <p><small>¡Tú decides qué fechas quieres organizar! Elige tu periodo y los días que deseas registrar.</small></p>
+ <div class="grid"><div><label>Fecha de inicio</label><input type="date" id="calStart" value="${c.start||''}"></div><div><label>Fecha de finalización</label><input type="date" id="calEnd" value="${c.end||''}"></div></div>
+ <p><b>¿Qué días quieres incluir?</b></p><div class="row">${['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'].map((n,i)=>`<label style="padding:5px 8px;background:var(--inp);border-radius:10px"><input type="checkbox" data-weekday="${i}" style="width:auto" ${(c.weekdays||[]).includes(i)?'checked':''}> ${n}</label>`).join('')}</div>
+ <div class="row" style="margin-top:8px"><button class="b" onclick="calPreset('all')">Todos los días</button><button class="b" onclick="calPreset('weekend')">Solo fines de semana</button><button class="b" onclick="calPreset('week')">Lunes a viernes</button></div>
+ <p><label>También puedes agregar una fecha individual</label><input type="date" id="calExtra"><button class="b" onclick="calAddDate()">＋ Agregar fecha</button></p>
+ <button class="b p" onclick="calCreate()">🌷 Crear / actualizar mi calendario</button>
+ </div>
+ ${c.active?`<div class="card"><h3>Mis fechas seleccionadas</h3><p><small>Del ${c.start} al ${c.end}. Puedes quitar fechas individuales con ✕.</small></p>
+ <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(110px,1fr))">${days.map(k=>{const d=lt(k),we=d.getDay()%6==0;return `<div class="day ${we?'we':''} ${k==fd?'on':''}" style="position:relative" onclick="openDay('${k}')">${S.f[k]?'💗 ':''}<b>${DS[d.getDay()].slice(0,3)} ${d.getDate()}</b><br>${we?'🎀 Fin de semana':'🌿 Día seleccionado'}<button class="b" style="padding:1px 6px;margin-top:5px" onclick="event.stopPropagation();calRemoveDate('${k}')" title="Quitar fecha">✕</button></div>`}).join('')||'<small>No hay fechas seleccionadas. Marca días de la semana o agrega fechas individuales.</small>'}</div></div>`:
+ `<div class="card"><small>Aún no has creado tu calendario. Selecciona tus fechas y días y pulsa «Crear mi calendario».</small></div>`}
+ ${saved.length?`<div class="card"><h3>Registros anteriores guardados</h3><p><small>Estos registros se conservan aunque no estén dentro de tu calendario actual.</small></p><div class="row">${saved.map(k=>`<button class="b" onclick="openDay('${k}')">${lng(k)}</button>`).join('')}</div></div>`:''}
+ <div id="day"></div>`;
+};
 function meal(k,e,t,sn){const f=(S.f[fd]||{})[k]||{};const fl=(c,l,ta)=>`<label>${l}</label>${ta?'<textarea':'<input'} data-k="${k}.${c}" ${ta?`>${esc(f[c])}</textarea>`:`value="${esc(f[c])}">`}`;
  return `<div class="card"><h3>${e} ${t}</h3><div class="grid"><div><label>Hora</label><input type="time" data-k="${k}.h" value="${f.h||''}"></div><div>${fl('n',sn?'Alimentos consumidos':'Nombre de los alimentos')}</div><div>${fl('p',sn?'Cantidad aproximada':'Porciones / cantidades')}</div>${sn?'':`<div>${fl('i','Ingredientes')}</div>`}</div>${fl('d','Descripción',1)}
  <label class="btn">📷 Foto<input type="file" accept="image/*" hidden onchange="ph(this,'${k}')"></label><img class="pv" data-k="${k}.f" id="im-${k}" ${f.f?`src="${f.f}"`:''}></div>`}
 function rate(k,ic,v){return `<div class="rate" data-k="${k}" data-v="${v||0}">${[1,2,3,4,5].map(i=>`<span class="${i<=v?'on':''}" onclick="rt(this,${i})">${ic}</span>`).join('')}</div>`}
 function openDay(k){fd=k;document.querySelectorAll('.day').forEach(x=>x.classList.remove('on'));const d=S.f[k]||{},hab=['Dormí bien','Me mantuve hidratada','Tuve momentos de descanso','Realicé alguna actividad física','Tuve tiempo para mí'];
- $('#day').innerHTML=`<div class="card"><h2>${lng(k)}</h2><small>Se guarda automáticamente 💗</small></div>
+ $('#day').innerHTML=`<div class="card"><h2>${lng(k)}</h2><small>Se guarda automáticamente 💗</small>
+ <details class="sec" open><summary>🌷 Mi día</summary><label>Información personal del día</label><textarea data-k="per" placeholder="¿Cómo fue tu día?">${esc(d.per)}</textarea></details></div>
  ${meal('des','🍓','Desayuno')}${meal('alm','🥗','Almuerzo')}${meal('cen','🌙','Cena')}${meal('snk','🍪','Snacks y alimentos adicionales',1)}
- <div class="card"><h3>Bienestar</h3><div class="grid"><div><label>Horas de sueño</label><input type="number" step=".5" data-k="sue" value="${d.sue??''}"></div><div><label>Agua consumida (ml)</label><input type="number" data-k="ag" value="${d.ag??waterTotal(k)}"></div></div>
- <label>Hambre</label>${rate('ham','🌸',d.ham)}<label>Saciedad</label>${rate('sac','🌸',d.sac)}<label>Energía</label>${rate('ene','⭐',d.ene)}</div>
- <div class="card"><h3>Hábitos</h3>${hab.map((h,i)=>`<p><label><input type="checkbox" style="width:auto" data-k="hab.${i}" ${get(d,'hab.'+i)?'checked':''}> ${h}</label></p>`).join('')}
+ <div class="card"><details class="sec" open><summary>💗 Bienestar</summary><div class="grid"><div><label>Horas de sueño</label><input type="number" step=".5" data-k="sue" value="${d.sue??''}"></div><div><label>Agua consumida (ml)</label><input type="number" data-k="ag" value="${d.ag??waterTotal(k)}"></div></div>
+ <label>Hambre</label>${rate('ham','🌸',d.ham)}<label>Saciedad</label>${rate('sac','🌸',d.sac)}<label>Energía</label>${rate('ene','⭐',d.ene)}</details>
+ <details class="sec" open><summary>🌿 Hábitos</summary>${hab.map((h,i)=>`<p><label><input type="checkbox" style="width:auto" data-k="hab.${i}" ${get(d,'hab.'+i)?'checked':''}> ${h}</label></p>`).join('')}
  <label>Observaciones</label><textarea data-k="obs">${esc(d.obs)}</textarea>
- <label>Calorías (opcional, solo informativo)</label><input type="number" data-k="kc" value="${d.kc??''}"></div>`;
+ <label>Calorías (opcional, solo informativo)</label><input type="number" data-k="kc" value="${d.kc??''}"></details>
+ <details class="sec" open><summary>📈 Seguimiento del día</summary><p>💧 Hidratación registrada: <b>${waterTotal(k)} ml</b> de ${S.wg} ml</p>${bar(pct(waterTotal(k),S.wg))}<p>🌸 Pasos: <b>${stepsOf(k)}</b> de ${S.sg}${hcSteps(k)!==undefined?' <small>(Health Connect)</small>':''}</p>${bar(pct(stepsOf(k),S.sg))}</details></div>`;
  $('#day').oninput=$('#day').onchange=saveDay;$('#day').scrollIntoView({behavior:'smooth'});
  document.querySelectorAll('.day').forEach(x=>{if(x.getAttribute('onclick').includes(k))x.classList.add('on')})}
 function saveDay(){if(!fd)return;const d=S.f[fd]||{};document.querySelectorAll('#day [data-k]').forEach(e=>{let v;if(e.type=='checkbox')v=e.checked;else if(e.dataset.v!==undefined)v=+e.dataset.v;else if(e.tagName=='IMG')v=e.getAttribute('src')||'';else v=e.value;set(d,e.dataset.k,v)});S.f[fd]=d;sv()}
 function rt(el,i){const p=el.parentNode;p.dataset.v=p.dataset.v==i?0:i;[...p.children].forEach((s,j)=>s.classList.toggle('on',j<p.dataset.v));saveDay()}
 function ph(el,k){if(el.files[0])resize(el.files[0],u=>{$('#im-'+k).src=u;saveDay()})}
 
-/* ===== DIARIO PERSONAL ===== */
-const MO=['😊','🥰','😌','😢','😴','😠','🤍'];let mood='😊',eid=null;
-PG.diario=()=>`<div class="card diary"><h2>🎀 Mi diario</h2><div class="grid"><div><label>Fecha</label><input type="date" id="dd" value="${td()}"></div><div><label>Título</label><input id="dt"></div></div>
+/* ===== DIARIO PERSONAL (con imágenes en Firebase Storage) ===== */
+const MO=['😊','🥰','😌','😢','😴','😠','🤍'];let mood='😊',eid=null,dimgs=[];
+const OKT=['image/jpeg','image/png','image/webp'],MAXB=10*1024*1024,MAXN=8;
+PG.diario=()=>{dimgs=[];return `<div class="card diary"><h2>🎀 Mi diario</h2><div class="grid"><div><label>Fecha</label><input type="date" id="dd" value="${td()}"></div><div><label>Título</label><input id="dt"></div></div>
  <div>${MO.map(m=>`<button class="b mood ${m==mood?'on':''}" onclick="mood='${m}';document.querySelectorAll('.mood').forEach(x=>x.classList.toggle('on',x.textContent=='${m}'))">${m}</button>`).join('')}</div>
- <textarea id="dx" placeholder="Querido diario..."></textarea><button class="b p" onclick="dsave()">Guardar entrada</button> <button class="b" onclick="go('diario')">Nueva</button></div>
- <div class="card"><h3>Entradas anteriores</h3><input id="dq" placeholder="Buscar por título o fecha (2026-11-20)" oninput="dlist()"><div id="dl"></div></div>`;
-function dsave(){const o={id:eid||Date.now(),d:$('#dd').value,t:$('#dt').value||'Sin título',m:mood,x:$('#dx').value};if(eid)S.dr=S.dr.map(e=>e.id==eid?o:e);else S.dr.push(o);sv();eid=null;go('diario')}
-function dlist(){const q=($('#dq')?.value||'').toLowerCase();$('#dl').innerHTML=S.dr.filter(e=>(e.t+e.d).toLowerCase().includes(q)).sort((a,b)=>b.d.localeCompare(a.d)).map(e=>`<div class="card" style="background:#fffafc"><b>${e.m} ${esc(e.t)}</b> <small>${e.d}</small><p style="white-space:pre-wrap">${esc(e.x)}</p><button class="b" onclick="dedit(${e.id})">✏️ Editar</button> <button class="b" onclick="ddel(${e.id})">🗑</button></div>`).join('')||'<small>Sin entradas.</small>'}
-function dedit(id){const e=S.dr.find(x=>x.id==id);eid=id;mood=e.m;$('#dd').value=e.d;$('#dt').value=e.t;$('#dx').value=e.x;document.querySelectorAll('.mood').forEach(x=>x.classList.toggle('on',x.textContent==mood));window.scrollTo(0,0)}
-function ddel(id){if(confirm('¿Eliminar esta entrada?')){S.dr=S.dr.filter(e=>e.id!=id);sv();dlist()}}
+ <textarea id="dx" placeholder="Querido diario..."></textarea>
+ <label class="btn">🖼 Agregar imágenes<input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onchange="dimgAdd(this)"></label> <small>JPG, PNG o WebP · máx. ${MAXN} por entrada</small>
+ <div class="pvs" id="dpv"></div><p id="dmsg" style="margin:6px 0"></p>
+ <button class="b p" id="dsb" onclick="dsave()">Guardar entrada</button> <button class="b" onclick="go('diario')">Nueva</button></div>
+ <div class="card"><h3>Entradas anteriores</h3><input id="dq" placeholder="Buscar por título o fecha (2026-11-20)" oninput="dlist()"><div id="dl"></div></div>`};
+function dpv(){$('#dpv').innerHTML=dimgs.map((x,i)=>`<div class="pvi"><img src="${x.prev||x.u}" onclick="lb(this.src)"><button class="b" onclick="dimgDel(${i})">✕</button></div>`).join('')}
+function toBlob(file,max){return new Promise((ok,no)=>{const u=URL.createObjectURL(file),i=new Image();i.onload=()=>{const s=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=Math.round(i.width*s);c.height=Math.round(i.height*s);c.getContext('2d').drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?ok(b):no(new Error('blob')),'image/jpeg',.82)};i.onerror=()=>no(new Error('imagen no válida'));i.src=u})}
+async function dimgAdd(el){const m=$('#dmsg');m.textContent='';
+ for(const f of [...el.files]){
+  if(!OKT.includes(f.type)){m.textContent=`"${f.name}": formato no permitido (usa JPG, PNG o WebP) 🌸`;continue}
+  if(f.size>MAXB){m.textContent=`"${f.name}": pesa más de 10 MB 🌸`;continue}
+  if(dimgs.length>=MAXN){m.textContent=`Máximo ${MAXN} imágenes por entrada 🌸`;break}
+  try{const b=await toBlob(f,1600);dimgs.push({file:b,prev:URL.createObjectURL(b)})}catch(e){m.textContent=`No se pudo leer "${f.name}" 🌸`}
+ }el.value='';dpv()}
+function dimgDel(i){dimgs.splice(i,1);dpv()}
+function lb(src){const d=document.createElement('div');d.id='lbx';d.innerHTML=`<img src="${src}">`;d.onclick=()=>d.remove();document.body.appendChild(d)}
+async function dsave(){const btn=$('#dsb'),m=$('#dmsg'),id=eid||Date.now(),old=eid?(S.dr.find(e=>e.id==eid)?.im||[]):[];
+ const news=dimgs.filter(x=>x.file);
+ if(news.length&&!window.__bloomStorage){m.textContent='Almacenamiento en la nube no disponible. Revisa tu conexión e inicia sesión 🌸';return}
+ btn.disabled=true;m.textContent=news.length?'Subiendo imágenes...':'';
+ let im;
+ try{
+  im=[];let n=0;
+  for(const x of dimgs){if(x.file){n++;m.textContent=`Subiendo imagen ${n} de ${news.length}...`;im.push(await window.__bloomStorage.up(`diary/${id}/${Date.now()}-${n}.jpg`,x.file))}else im.push({p:x.p,u:x.u})}
+ }catch(e){console.error(e);m.textContent='No se pudieron subir las imágenes (¿sin conexión o sin permisos?). Tu texto sigue aquí, intenta de nuevo 🌸';btn.disabled=false;return}
+ const o={id,d:$('#dd').value,t:$('#dt').value||'Sin título',m:mood,x:$('#dx').value,im};
+ if(eid)S.dr=S.dr.map(e=>e.id==eid?o:e);else S.dr.push(o);sv();
+ old.filter(a=>!im.some(b=>b.p==a.p)).forEach(a=>window.__bloomStorage?.rm(a.p)); // borra solo las que quitaste
+ eid=null;go('diario')}
+function dlist(){const q=($('#dq')?.value||'').toLowerCase();$('#dl').innerHTML=S.dr.filter(e=>(e.t+e.d).toLowerCase().includes(q)).sort((a,b)=>b.d.localeCompare(a.d)).map(e=>`<div class="card" style="background:var(--inp)"><b>${e.m} ${esc(e.t)}</b> <small>${e.d}</small><p style="white-space:pre-wrap">${esc(e.x)}</p>${(e.im||[]).length?`<div class="gal">${e.im.map(i=>`<img src="${esc(i.u)}" loading="lazy" onclick="lb(this.src)">`).join('')}</div>`:''}<p><button class="b" onclick="dedit(${e.id})">✏️ Editar</button> <button class="b" onclick="ddel(${e.id})">🗑</button></p></div>`).join('')||'<small>Sin entradas.</small>'}
+function dedit(id){const e=S.dr.find(x=>x.id==id);eid=id;mood=e.m;$('#dd').value=e.d;$('#dt').value=e.t;$('#dx').value=e.x;dimgs=(e.im||[]).map(x=>({...x}));dpv();document.querySelectorAll('.mood').forEach(x=>x.classList.toggle('on',x.textContent==mood));window.scrollTo(0,0)}
+function ddel(id){if(confirm('¿Eliminar esta entrada y sus imágenes?')){const e=S.dr.find(x=>x.id==id);S.dr=S.dr.filter(e=>e.id!=id);sv();(e?.im||[]).forEach(a=>window.__bloomStorage?.rm(a.p));dlist()}}
 
 /* ===== MOVIMIENTO ===== */
 let vid=null;
 const yid=u=>(u.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/)||[])[1];
-PG.mov=()=>{const t=td(),n=S.st[t]||0;return `<div class="card"><h2>🌸 Pasos</h2><div class="big">${n} / ${S.sg}</div>${bar(pct(n,S.sg))}<p><small>Cada paso suma, sin presión 🌷</small></p>
- <div class="row"><input type="number" id="sn" placeholder="Pasos de hoy" value="${n||''}" style="width:150px"><button class="b p" onclick="S.st['${t}']=+$('#sn').value||0;sv();go('mov')">Guardar</button>
+PG.mov=()=>{const t=td(),n=stepsOf(t),hc=window.__bloomHC||{},h=hc[t];
+ const keys=[...new Set([...Object.keys(S.st),...Object.keys(hc)])].sort().reverse();
+ const upd=h&&h.updatedAt&&h.updatedAt.toDate?h.updatedAt.toDate().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):'';
+ return `<div class="card"><h2>🌸 Pasos</h2><div class="big">${n} / ${S.sg}</div>${bar(pct(n,S.sg))}<p><small>Cada paso suma, sin presión 🌷</small></p>
+ <p>${h?`✅ Pasos automáticos de Health Connect${upd?` · actualizado ${upd}`:''}`:'📵 Aún no hay pasos de Health Connect para hoy. Se muestran automáticamente cuando el componente Android los envíe (necesita permisos y la app nativa instalada). Mientras tanto puedes usar el registro manual.'}</p>
+ <div class="row"><label>Registro manual (opcional)</label><input type="number" id="sn" placeholder="Pasos de hoy" value="${S.st[t]||''}" style="width:150px"><button class="b p" onclick="S.st['${t}']=+$('#sn').value||0;sv();go('mov')">Guardar</button>
  <label>Meta</label><input type="number" style="width:110px" value="${S.sg}" onchange="S.sg=+this.value||10000;sv();go('mov')"></div>
- ${Object.keys(S.st).sort().reverse().map(k=>`<p>${lng(k)}: <b>${S.st[k]}</b> pasos</p>`).join('')}</div>
+ ${keys.map(k=>`<p>${lng(k)}: <b>${stepsOf(k)}</b> pasos <small>${hcSteps(k)!==undefined?'(Health Connect)':'(manual)'}</small></p>`).join('')}</div>
  <div class="card"><h2>▶ Rutinas de YouTube</h2><div class="grid"><input id="vu" placeholder="Enlace de YouTube"><input id="vn" placeholder="Nombre"><input id="vc" placeholder="Categoría (yoga, baile...)"></div><textarea id="vd" placeholder="Descripción" style="min-height:50px"></textarea><button class="b p" onclick="vsave()">Guardar video</button> <button class="b" onclick="vid=null;go('mov')">Limpiar</button></div>
  <div class="grid">${S.vd.map(v=>`<div class="card"><div id="pl${v.id}"><img class="thumb" src="https://img.youtube.com/vi/${v.y}/hqdefault.jpg" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.youtube-nocookie.com/embed/${v.y}&quot; allowfullscreen></iframe>'" alt="miniatura"></div><b>${esc(v.n)}</b><br><small>🏷 ${esc(v.c)}</small><p>${esc(v.d)}</p><button class="b" onclick="vedit(${v.id})">✏️</button> <button class="b" onclick="vdel(${v.id})">🗑</button></div>`).join('')}</div>`};
 function vsave(){const u=$('#vu').value,y=yid(u);if(!y)return alert('Pega un enlace válido de YouTube 🌸');const o={id:vid||Date.now(),u,y,n:$('#vn').value||'Rutina',c:$('#vc').value||'General',d:$('#vd').value};if(vid)S.vd=S.vd.map(v=>v.id==vid?o:v);else S.vd.push(o);vid=null;sv();go('mov')}
@@ -220,28 +406,29 @@ function vedit(id){const v=S.vd.find(x=>x.id==id);vid=id;$('#vu').value=v.u;$('#
 function vdel(id){if(confirm('¿Eliminar video?')){S.vd=S.vd.filter(v=>v.id!=id);sv();go('mov')}}
 
 /* ===== PERFIL ===== */
-PG.perfil=()=>{const p=S.pf;return `<div class="card"><h2>🪞 Mi perfil</h2>${p.ph?`<img class="pv" src="${p.ph}" style="width:120px;height:120px;object-fit:cover;border-radius:50%">`:''}
+PG.perfil=()=>{const p=S.pf,th=curTheme(),NM={rosa:'Rosa pastel',lila:'Lila',salvia:'Verde salvia',crema:'Crema'};return `<div class="card"><h2>🪞 Mi perfil</h2>${p.ph?`<img class="pv" src="${p.ph}" style="width:120px;height:120px;object-fit:cover;border-radius:50%">`:''}
  <label class="btn">📷 Foto de perfil<input type="file" accept="image/*" hidden onchange="if(this.files[0])resize(this.files[0],u=>{S.pf.ph=u;sv();go('perfil')})"></label>
  <label>Nombre o apodo</label><input id="pn" value="${esc(p.n)}"><label>Fecha de nacimiento</label><input type="date" id="pb" value="${p.b||''}">
- <label>Descripción</label><textarea id="pd">${esc(p.d)}</textarea><label>Color favorito</label><input type="color" id="pc" value="${p.c||'#e8a0bf'}"><label>Frase personal</label><input id="pf" value="${esc(p.f)}">
+ <label>Descripción</label><textarea id="pd">${esc(p.d)}</textarea>
+ <label>Tema de color</label><div class="row">${Object.keys(PRE).map(k=>`<button class="sw ${th==k?'on':''}" data-t="${k}" title="${NM[k]}" style="background:${PRE[k]}" onclick="setTheme('${k}')"></button>`).join('')}
+ <span class="sw ${th=='custom'?'on':''}" data-t="custom" style="display:none"></span></div>
+ <label>Color favorito (personalizado)</label><input type="color" id="pc" value="${p.c||'#e8a0bf'}" oninput="setTheme('custom',this.value)">
+ <label>Frase personal</label><input id="pf" value="${esc(p.f)}">
  <p><button class="b p" onclick="psave()">Guardar</button></p></div>
  <div class="card"><h3>Mis datos</h3><button class="b p" onclick="expo()">⬇ Exportar JSON</button></div>`};
-function psave(){Object.assign(S.pf,{n:$('#pn').value,b:$('#pb').value,d:$('#pd').value,c:$('#pc').value,f:$('#pf').value});document.documentElement.style.setProperty('--acento',S.pf.c);sv();go('perfil')}
+function psave(){Object.assign(S.pf,{n:$('#pn').value,b:$('#pb').value,d:$('#pd').value,f:$('#pf').value});sv();go('perfil')}
 function expo(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:'application/json'}));a.download=`bloom-diary-${td()}.json`;a.click()}
-// Funciones usadas por los botones HTML (onclick) y por la capa de autenticación.
-Object.assign(window,{go,ivGo,ivPause,ivReset,ivDel,addW,delW,editW,openDay,rt,ph,dsave,dlist,dedit,ddel,vsave,vedit,vdel,psave,expo,resize,normalizeState});
+Object.assign(window,{go,ivSave,ivClear,ivDel,addW,delW,editW,openDay,rt,ph,dsave,dlist,dedit,ddel,dimgAdd,dimgDel,lb,vsave,vedit,vdel,psave,expo,resize,normalizeState,setTheme,calCreate,calPreset,calAddDate,calRemoveDate});
 go('inicio');
 </script>
 
-<!-- =====================================================================
-     SCRIPT 2: Firebase (aquí están TODAS las correcciones)
-     ===================================================================== -->
+<!-- ===================== SCRIPT 2: Firebase ===================== -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
-import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp, collection } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
+import { getStorage, ref as sref, uploadBytes, getDownloadURL, deleteObject } from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-storage.js';
 
-// Tu configuración de Firebase (sin cambios).
 const firebaseConfig = {
   apiKey: 'AIzaSyC3yMb34AjdeUk4mR209elxPeAWwCyKJX4',
   authDomain: 'bloom-diary-fa0cf.firebaseapp.com',
@@ -268,8 +455,6 @@ if(!configured){
   statusLabel.textContent='⚙️ Falta configuración';
 }else{
   try{
-    // ✅ CAMBIO: mientras Firebase comprueba si ya hay sesión (sobre todo al volver de Google en el
-    // celular) antes se veía una pantalla en blanco. Ahora se muestra "Comprobando sesión...".
     const CHECKING='Comprobando sesión...';
     authScreen.style.display='block';
     authMessage.textContent=CHECKING;
@@ -278,22 +463,32 @@ if(!configured){
     const app=initializeApp(firebaseConfig);
     const auth=getAuth(app);
     const db=getFirestore(app);
+    const storage=getStorage(app);
     const provider=new GoogleAuthProvider();
-    let stopSnapshot=null,saveTimer=null,currentUid=null,seq=0;
+    let stopSnapshot=null,stopSteps=null,saveTimer=null,currentUid=null,seq=0;
     const userDoc=uid=>doc(db,'bloomDiaryUsers',uid);
 
-    /* ---------- Claves EXTRA de localStorage (la clave 'bloomdiary' NO se toca de nombre) ---------- */
-    const LS_KEY='bloomdiary';                    // tus datos (igual que siempre)
-    const LS_BACKUP='bloomdiary_respaldo_local';  // ✅ NUEVO: copia de seguridad antes de reemplazar datos
-    const LS_SYNCED='bloomdiary_synced_uid';      // ✅ NUEVO: qué cuenta ya se sincronizó en este aparato
-    const LS_PENDING='bloomdiary_pendiente';      // ✅ NUEVO: hay cambios locales aún sin subir a la nube
+    /* ---------- Almacenamiento de imágenes (Firebase Storage) ----------
+       Ruta: users/<uid>/diary/<idEntrada>/<archivo>.jpg  (solo tu cuenta puede leer/escribir, ver reglas) */
+    window.__bloomStorage={
+      async up(path,blob){
+        if(!currentUid)throw new Error('sin sesión');
+        const r=sref(storage,`users/${currentUid}/${path}`);
+        await uploadBytes(r,blob,{contentType:'image/jpeg'});
+        return {p:r.fullPath,u:await getDownloadURL(r)};
+      },
+      async rm(p){try{if(p&&p.startsWith(`users/${currentUid}/`))await deleteObject(sref(storage,p))}catch(e){console.warn('No se pudo borrar la imagen',e)}}
+    };
 
-    /* ---------- Utilidades de seguridad de datos ---------- */
+    const LS_KEY='bloomdiary';
+    const LS_BACKUP='bloomdiary_respaldo_local';
+    const LS_SYNCED='bloomdiary_synced_uid';
+    const LS_PENDING='bloomdiary_pendiente';
+
     const norm=d=>window.normalizeState(d);
     const stable=v=>JSON.stringify(v,(k,x)=>x&&typeof x==='object'&&!Array.isArray(x)?Object.keys(x).sort().reduce((o,key)=>(o[key]=x[key],o),{}):x);
-    const clean=s=>JSON.parse(JSON.stringify(s)); // Firestore rechaza valores "undefined"
+    const clean=s=>JSON.parse(JSON.stringify(s));
     const readLocal=()=>{try{return JSON.parse(localStorage.getItem(LS_KEY)||'null')}catch(e){return null}};
-    // ¿Hay registros reales? (un estado vacío NO cuenta como datos)
     const hasData=raw=>{
       if(!raw||typeof raw!=='object')return false;
       const s=norm(raw);
@@ -308,10 +503,10 @@ if(!configured){
       }catch(e){console.warn('No se pudo guardar el respaldo local (almacenamiento lleno)',e)}
     };
     const byId=(a,b)=>{a=Array.isArray(a)?a:[];b=Array.isArray(b)?b:[];const ids=new Set(b.map(x=>x&&x.id));return [...b,...a.filter(x=>x&&!ids.has(x.id))]};
-    // Une datos locales y de la nube SIN perder nada de ninguno de los dos.
     function merge(local,remote){
       const L=norm(local),R=norm(remote),out=norm(R);
       out.pf={...L.pf,...R.pf};
+      out.cal={...L.cal,...R.cal,weekdays:(R.cal?.weekdays??L.cal?.weekdays??[]),extra:[...new Set([...(L.cal?.extra||[]),...(R.cal?.extra||[])])],excluded:(R.cal?.excluded??L.cal?.excluded??[])};
       out.dr=byId(L.dr,R.dr);
       out.vd=byId(L.vd,R.vd);
       out.st={...L.st,...R.st};
@@ -323,11 +518,9 @@ if(!configured){
     }
     const apply=data=>{window.__bloomApplyingRemote=true;try{window.__bloomReplaceState(data)}finally{window.__bloomApplyingRemote=false}};
 
-    // Sube un estado a Firestore. Devuelve true si se subió.
     async function upload(uid,state){
       const data=clean(norm(state));
-      // Firestore limita cada documento a 1 MiB. Las fotos incrustadas pueden superar ese tamaño.
-      if(new Blob([JSON.stringify(data)]).size>850000){statusLabel.textContent='⚠️ Datos grandes: las fotos necesitan almacenamiento aparte';return false}
+      if(new Blob([JSON.stringify(data)]).size>850000){statusLabel.textContent='⚠️ Datos grandes: las fotos de comidas ocupan mucho espacio';return false}
       statusLabel.textContent='☁️ Guardando...';
       await setDoc(userDoc(uid),{data,updatedAt:serverTimestamp()});
       try{localStorage.setItem(LS_SYNCED,uid)}catch(e){}
@@ -335,23 +528,14 @@ if(!configured){
       return true;
     }
 
-    /* ---------- INICIO DE SESIÓN ---------- */
-    // ✅ CAMBIO PRINCIPAL: antes, en celulares se usaba signInWithRedirect. Firebase documenta que
-    // ese método NO funciona en navegadores que bloquean el almacenamiento entre sitios
-    // (Chrome/Safari móviles actuales) cuando la página NO está en Firebase Hosting y el authDomain
-    // es otro (aquí: página en vercel.app, authDomain en firebaseapp.com). Por eso volvías a la
-    // pantalla de inicio sin sesión. Ahora se usa ventana emergente (popup) en todos los aparatos y
-    // la redirección queda solo como plan B si el navegador bloquea el popup.
     const ua=navigator.userAgent;
     const isMobile=/Android|iPhone|iPad|iPod/i.test(ua);
-    const inApp=/FBAN|FBAV|Instagram|Line\/|Messenger|Snapchat|; wv\)/i.test(ua); // navegadores dentro de otras apps
+    const inApp=/FBAN|FBAV|Instagram|Line\/|Messenger|Snapchat|; wv\)/i.test(ua);
     if(inApp)authMessage.textContent='Estás en un navegador dentro de otra app. Abre esta página directamente en Chrome o Safari para iniciar sesión.';
     const errTxt=e=>'No se pudo iniciar sesión ('+(e&&e.code?e.code:'error')+'). '+(e&&e.message?e.message:'');
 
-    // ✅ NUEVO: si se usó redirección como plan B, aquí se recoge el resultado (y se muestra cualquier error).
     getRedirectResult(auth).catch(e=>{console.error('Error al volver de Google:',e);authMessage.textContent=errTxt(e);loginButton.disabled=false;loginButton.textContent='Continuar con Google'});
 
-    // ✅ CAMBIO: un solo listener de clic (sin duplicados).
     loginButton.addEventListener('click',async()=>{
       loginButton.disabled=true;
       authMessage.textContent='Abriendo Google...';
@@ -369,25 +553,24 @@ if(!configured){
     });
     logoutButton.addEventListener('click',()=>signOut(auth));
 
-    /* ---------- GUARDADO EN LA NUBE ---------- */
     window.__bloomQueueSave=(state)=>{
       if(!currentUid)return;
       const uid=currentUid,my=++seq;
-      try{localStorage.setItem(LS_PENDING,'1')}catch(e){}   // ✅ marca: hay cambios sin subir
+      try{localStorage.setItem(LS_PENDING,'1')}catch(e){}
       clearTimeout(saveTimer);
       saveTimer=setTimeout(async()=>{
         saveTimer=null;
         try{
-          // Se sube lo último guardado en localStorage (siempre es la versión más reciente).
           const ok=await upload(uid,readLocal()||state);
           if(ok&&my===seq)localStorage.removeItem(LS_PENDING);
         }catch(e){statusLabel.textContent='⚠️ Error al sincronizar';console.error(e)}
       },700);
     };
 
-    /* ---------- SESIÓN Y SINCRONIZACIÓN ---------- */
     onAuthStateChanged(auth,async user=>{
       if(stopSnapshot){stopSnapshot();stopSnapshot=null}
+      if(stopSteps){stopSteps();stopSteps=null}
+      window.__bloomHC={};
       currentUid=user?.uid||null;
       if(!user){
         appShell.style.display='none';authScreen.style.display='block';emailLabel.textContent='';statusLabel.textContent='🔒 Sesión cerrada';
@@ -404,8 +587,6 @@ if(!configured){
         const pending=localStorage.getItem(LS_PENDING)==='1';
 
         if(remoteHas){
-          // ✅ Si este aparato nunca se sincronizó con esta cuenta, o tiene cambios sin subir,
-          // se UNEN los datos locales y los de la nube en vez de que uno borre al otro.
           let finalState=remote;
           if(localHas&&(!syncedBefore||pending))finalState=merge(local,remote);
           if(stable(norm(finalState))!==stable(norm(local))){
@@ -420,25 +601,28 @@ if(!configured){
             statusLabel.textContent='☁️ Sincronizado';
           }
         }else if(localHas){
-          // ✅ La nube está vacía (o no existe) y este aparato tiene datos: se suben los LOCALES.
-          // Antes se podía crear un documento vacío ({}) que luego borraba los datos de otros aparatos.
           if(await upload(user.uid,local))localStorage.removeItem(LS_PENDING);
         }else{
           statusLabel.textContent='☁️ Sincronizado';
         }
 
         stopSnapshot=onSnapshot(ref,s=>{
-          // ✅ Se ignoran los "ecos" de tus propios guardados: antes cada guardado volvía a dibujar
-          // la pantalla y podía quitarte el cursor o el texto que estabas escribiendo.
           if(s.metadata.hasPendingWrites)return;
           const r=s.exists()?s.data()?.data:null;
-          if(!hasData(r))return;                                   // nunca se reemplaza con datos vacíos
-          if(saveTimer||localStorage.getItem(LS_PENDING)==='1')return; // hay cambios tuyos sin subir
+          if(!hasData(r))return;
+          if(saveTimer||localStorage.getItem(LS_PENDING)==='1')return;
           if(stable(norm(r))===stable(norm(readLocal()))){statusLabel.textContent='☁️ Sincronizado';return}
           backupLocal('cambio recibido desde otro aparato');
           apply(r);
           statusLabel.textContent='☁️ Sincronizado';
         },err=>{statusLabel.textContent='⚠️ Sin conexión con la nube';console.error(err)});
+
+        // Pasos de Health Connect: los escribe la app Android nativa en bloomDiaryUsers/<uid>/healthSteps/<YYYY-MM-DD>
+        // con { steps:number, updatedAt:timestamp, source:'healthconnect' }. Es una subcolección aparte: no toca tu documento principal.
+        stopSteps=onSnapshot(collection(db,'bloomDiaryUsers',user.uid,'healthSteps'),qs=>{
+          const m={};qs.forEach(d=>{const v=d.data();if(v&&typeof v.steps==='number')m[d.id]=v});
+          window.__bloomHC=m;window.__bloomHCUpdate?.();
+        },err=>console.warn('healthSteps no disponible (¿reglas de Firestore?)',err.code));
       }catch(e){window.__bloomApplyingRemote=false;statusLabel.textContent='⚠️ Error de acceso a datos';console.error(e);alert('No se pudieron cargar tus datos. Revisa la configuración y las reglas de Firestore.')}
     });
   }catch(e){authScreen.style.display='block';authMessage.textContent='Error al iniciar Firebase: '+e.message;console.error(e)}
